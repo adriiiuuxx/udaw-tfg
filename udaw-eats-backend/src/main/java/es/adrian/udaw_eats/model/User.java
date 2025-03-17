@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {

@@ -1,9 +1,6 @@
 package es.adrian.udaw_eats.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -13,7 +10,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class Address {
@@ -21,6 +17,18 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private String street;
+
+    private String city;
+
+    private String state;
+
+    private String zipCode;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User customer;
 
     @Override
     public final boolean equals(Object o) {
