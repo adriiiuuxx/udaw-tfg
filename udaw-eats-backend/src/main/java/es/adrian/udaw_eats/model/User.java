@@ -1,6 +1,7 @@
 package es.adrian.udaw_eats.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import es.adrian.udaw_eats.dto.RestaurantDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,9 +27,10 @@ public class User {
 
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    private USER_ROLE role;
+    private USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;  // by default the role is customer
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
