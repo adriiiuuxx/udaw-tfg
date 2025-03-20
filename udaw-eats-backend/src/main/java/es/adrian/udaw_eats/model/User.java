@@ -24,7 +24,7 @@ public class User {
 
     private String fullName;
 
-    private String Email;
+    private String email;
 
     private String password;
 
@@ -36,7 +36,7 @@ public class User {
     private List<Order> orders = new ArrayList<>();
 
     @ElementCollection
-    private List<RestaurantDto> favourites = new ArrayList();
+    private List<RestaurantDto> favourites = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
