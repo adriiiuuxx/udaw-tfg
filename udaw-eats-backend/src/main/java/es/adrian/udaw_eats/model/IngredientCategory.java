@@ -29,6 +29,7 @@ public class IngredientCategory {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @JsonIgnore
     private List<IngredientsItem> ingredients = new ArrayList<>();
 
     @Override

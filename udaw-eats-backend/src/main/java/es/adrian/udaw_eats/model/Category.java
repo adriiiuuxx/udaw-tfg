@@ -22,7 +22,7 @@ public class Category {
     private String name;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne (optional = true)
     private Restaurant restaurant;
 
     @Override

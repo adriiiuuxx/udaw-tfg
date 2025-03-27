@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,10 +42,15 @@ public class Food {
     private boolean isVegetarian;
 
     @ManyToMany
+    @JoinTable(
+            name = "food_ingredients",
+            joinColumns = @JoinColumn(name = "food_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredients_id")
+    )
     @ToString.Exclude
     private List<IngredientsItem> ingredients = new ArrayList<>();
 
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @Override
     public final boolean equals(Object o) {
