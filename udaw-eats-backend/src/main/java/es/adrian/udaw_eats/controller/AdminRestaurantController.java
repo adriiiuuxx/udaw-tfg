@@ -54,7 +54,7 @@ public class AdminRestaurantController {
 
         MessageResponse res = new MessageResponse();
         res.setMessage("Restaurant deleted successfully");
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}/status")

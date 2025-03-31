@@ -65,6 +65,6 @@ public class AdminFoodController {
 
         res.setMessage("Food deleted correctly");
 
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
     }
 }
