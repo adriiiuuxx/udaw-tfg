@@ -26,7 +26,11 @@ public class OrderItem {
 
     private Long totalPrice;
 
-    private List<String> ingredients;
+    private String ingredients;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @Override
     public final boolean equals(Object o) {

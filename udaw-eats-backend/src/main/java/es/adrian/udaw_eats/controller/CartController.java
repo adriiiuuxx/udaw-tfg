@@ -27,7 +27,7 @@ public class CartController {
 
         User user = userService.findUserByJwtToken(jwt);
 
-        Cart cart = cartService.findCartByUserId(jwt);
+        Cart cart = cartService.findCartByUserId(user.getId());
 
         return new ResponseEntity<>(cart, HttpStatus.OK);
 
@@ -74,7 +74,7 @@ public class CartController {
 
         User user = userService.findUserByJwtToken(jwt);
 
-        Cart cart = cartService.clearCart(jwt);
+        Cart cart = cartService.clearCart(user.getId());
 
         return new ResponseEntity<>(cart, HttpStatus.OK);
 

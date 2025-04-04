@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -29,8 +30,6 @@ public class Order {
     @ManyToOne
     private Restaurant restaurant;
 
-    private Long totalAmount;
-
     private String orderStatus;
 
     private Date createdAt;
@@ -38,13 +37,12 @@ public class Order {
     @ManyToOne
     private Address deliveryAddress;
 
-    @OneToMany
-    @ToString.Exclude
-    private List<OrderItem> items;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<OrderItem> items = new ArrayList<>();
 
     private int totalItem;
 
-    private int totalPrice;
+    private Long totalPrice;
 
     // private Payment payment;
 
