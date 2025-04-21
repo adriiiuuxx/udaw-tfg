@@ -39,7 +39,7 @@ public class FoodController {
     }
 
     @GetMapping("/restaurant/{restaurantId}")
-    public ResponseEntity<List<Food>> getRestaurantFood(@RequestParam boolean vegetarian,
+    public ResponseEntity<List<Food>> getRestaurantFood(@RequestParam(required = false) boolean vegetarian,
                                                         @RequestParam(required = false) boolean nonVegetarian,
                                                         @RequestParam(required = false) String foodCategory,
                                                         @PathVariable Long restaurantId,

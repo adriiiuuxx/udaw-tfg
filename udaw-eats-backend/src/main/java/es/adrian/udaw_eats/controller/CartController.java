@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class CartController {
@@ -79,4 +81,13 @@ public class CartController {
         return new ResponseEntity<>(cart, HttpStatus.OK);
 
     }
+
+    @GetMapping("/cart/{cartId}/items")
+    public ResponseEntity<List<CartItem>> getAllCartItems(@PathVariable Long cartId,
+                                                          @RequestHeader("Authorization") String jwt) throws Exception {
+        List<CartItem> cartItems = cartService.getAllCartItems(cartId, jwt);
+        return new ResponseEntity<>(cartItems, HttpStatus.OK);
+    }
+
+
 }

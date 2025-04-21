@@ -4,6 +4,8 @@ import es.adrian.udaw_eats.model.Cart;
 import es.adrian.udaw_eats.model.CartItem;
 import es.adrian.udaw_eats.request.AddCartItemRequest;
 
+import java.util.List;
+
 public interface CartService {
 
     CartItem addItemToCart(AddCartItemRequest req, String jwt) throws Exception;
@@ -19,5 +21,9 @@ public interface CartService {
     Cart findCartByUserId (Long userId) throws Exception;
 
     Cart clearCart(Long userId) throws Exception;
+
+    List<CartItem> getAllCartItems(Long cartId, String jwt) throws Exception;
+
+
 
 }

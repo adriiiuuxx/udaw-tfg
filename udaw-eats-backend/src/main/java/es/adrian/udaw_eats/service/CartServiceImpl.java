@@ -10,6 +10,7 @@ import es.adrian.udaw_eats.request.AddCartItemRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -100,7 +101,10 @@ public class CartServiceImpl implements CartService{
         Long total = 0L;
 
         for (CartItem cartItem : cart.getItems()){
-            total = cartItem.getFood().getPrice() * cartItem.getQuantity();
+            total += cartItem.getFood().getPrice() * cartItem.getQuantity();
+        }
+        if (cart.getItems().isEmpty()) {
+            return 0L;
         }
 
         return total;
@@ -137,4 +141,18 @@ public class CartServiceImpl implements CartService{
 
         return cartRepository.save(cart);
     }
+
+    @Override
+    public List<CartItem> getAllCartItems(Long cartId, String jwt) throws Exception {
+        User user = userService.findUserByJwtToken(jwt);
+        Cart cart = findCartById(cartId);
+
+        if (!cart.getCustomer().getId().equals(user.getId())) {
+            throw new Exception("Access denied: This cart does not belong to the user.");
+        }
+
+        return cart.getItems();
+    }
+
+
 }

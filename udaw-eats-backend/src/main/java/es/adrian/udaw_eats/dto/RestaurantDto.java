@@ -18,4 +18,10 @@ public class RestaurantDto {
 
     private Long id;
 
+    private boolean opened;
+
+    public String getName() {
+        return title; // Map `title` to `name` in the getter
+    }
+
 }

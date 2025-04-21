@@ -57,6 +57,7 @@ public class RestaurantServiceImpl implements RestaurantService{
         dto.setDescription(restaurant.getDescription());
         dto.setImages(restaurant.getImages());
         dto.setTitle(restaurant.getName());
+        dto.setOpened(restaurant.isOpened());
         dto.setId(restaurantId);
 
         boolean isAlreadyAdded = false;
