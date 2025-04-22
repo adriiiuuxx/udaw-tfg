@@ -14,12 +14,13 @@ import { getUser } from './State/Authentication/action';
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { findCart } from './State/Cart/action';
+import { Routers } from './Routers/Routers';
 
 
 function App() {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
-  const {auth} = useSelector(store => store);
+  const { auth } = useSelector(store => store);
 
   useEffect(() => {
     // Only dispatch getUser if we have a valid token
@@ -34,17 +35,7 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
 
-      {/*  <Navbar /> */}
-
-      {/* <Home></Home> */}
-
-      {/* <RestaurantDetails></RestaurantDetails> */}
-
-      {/* <Cart></Cart> */}
-
-      {/* <Profile></Profile> */}
-
-      <CustomerRoute></CustomerRoute>
+      <Routers />
 
     </ThemeProvider>
   );
