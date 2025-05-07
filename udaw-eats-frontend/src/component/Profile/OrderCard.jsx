@@ -40,6 +40,9 @@ export const OrderCard = ({ order }) => {
                     <p className='text-lg font-semibold text-primary'>
                         Order ID: {order.id}
                     </p>
+                    <p className='text-lg font-semibold text-primary'>
+                        <span className='font-medium'>{order.items[0]?.food?.restaurant?.name || 'Unknown'}</span>
+                    </p>
                     <p className='text-sm text-gray-400'>
                         Total Price: <span className='font-medium'>{order.totalPrice}€</span>
                     </p>

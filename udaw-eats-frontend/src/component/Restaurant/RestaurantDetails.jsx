@@ -8,7 +8,7 @@ import { MenuCard } from './MenuCard';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRestaurantById, getRestaurantCategory } from '../../State/Restaurant/action';
-import { geMenuItemsByRestaurantId } from '../../State/Menu/action'
+import { getMenuItemsByRestaurantId } from '../../State/Menu/action'
 
 const foodTypes = [
     { label: "ALL", value: "all" },
@@ -47,7 +47,7 @@ export const RestaurantDetails = () => {
 
     useEffect(() => {
         dispatch(
-            geMenuItemsByRestaurantId({
+            getMenuItemsByRestaurantId({
                 restaurantId: id,
                 jwt,
                 vegetarian: foodType === "vegetarian",

@@ -12,8 +12,8 @@ export const createMenuItem = ({ menu, jwt }) => {
                     }
                 }
             );
-            console.log(`Created menu: ${data}`);
             dispatch({ type: CREATE_MENU_ITEM_SUCCESS, payload: data })
+            console.log(`Created menu: ${data}`);
 
         } catch (error) {
             console.log("Catch error: ", error);
@@ -22,7 +22,7 @@ export const createMenuItem = ({ menu, jwt }) => {
     }
 }
 
-export const geMenuItemsByRestaurantId = (reqData) => {
+export const getMenuItemsByRestaurantId = (reqData) => {
     return async (dispatch) => {
         dispatch({ type: GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST })
         try {

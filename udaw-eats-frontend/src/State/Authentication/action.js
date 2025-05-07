@@ -6,20 +6,24 @@ export const loginUser = (reqData => async (dispatch) => {
     dispatch({ type: LOGIN_REQUEST });
     try {
         const { data } = await axios.post(`${API_BASE_URL}auth/signin`, reqData.userData);
+
+        console.log("Login Response:", data); // Debug the API response
+
         if (data.jwt) {
             localStorage.setItem("jwt", data.jwt);
         }
         dispatch({ type: LOGIN_SUCCESS, payload: data.jwt });
-        if (data.role === "RESTAURANT_OWNER") {
-            reqData.navigate("api/admin/restaurant") 
-        } else {
-            reqData.navigate("/") 
-        }
 
+        if (data.role === "ROLE_RESTAURANT_OWNER") {
+            reqData.navigate("/admin/restaurants");
+        } else {
+            reqData.navigate("/");
+        }
     } catch (error) {
+        console.error("Login Error:", error.response?.data); // Debug the error
         dispatch({ type: LOGIN_FAILURE, payload: error.response.data });
     }
-})
+});
 
 export const registerUser = (reqData => async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST });
@@ -29,10 +33,10 @@ export const registerUser = (reqData => async (dispatch) => {
             localStorage.setItem("jwt", data.jwt);
         }
         dispatch({ type: REGISTER_SUCCESS, payload: data.jwt });
-        if (data.role === "RESTAURANT_OWNER") {
-            reqData.navigate("api/admin/restaurant")
+        if (data.role === "ROLE_RESTAURANT_OWNER") {
+            reqData.navigate("admin/restaurants")
         } else {
-            reqData.navigate("/") 
+            reqData.navigate("/")
         }
     } catch (error) {
         dispatch({ type: REGISTER_FAILURE, payload: error.response.data });
@@ -52,7 +56,7 @@ export const getUser = (jwt => async (dispatch) => {
                 Authorization: `Bearer ${jwt}`
             }
         });
-        dispatch({ type: GET_USER_SUCCESS, payload: data});
+        dispatch({ type: GET_USER_SUCCESS, payload: data });
     } catch (error) {
         // Handle 401/403 errors differently from 500
         if (error.response?.status === 401 || error.response?.status === 403) {
@@ -62,7 +66,7 @@ export const getUser = (jwt => async (dispatch) => {
     }
 });
 
-export const addToFavorites = ({jwt, restaurantId}) => async (dispatch) => {
+export const addToFavorites = ({ jwt, restaurantId }) => async (dispatch) => {
     dispatch({ type: ADD_TO_FAVOURITE_REQUEST });
     try {
         const { data } = await api.put(`api/restaurants/${restaurantId}/add-favourites`, {}, {
@@ -72,12 +76,12 @@ export const addToFavorites = ({jwt, restaurantId}) => async (dispatch) => {
         });
         dispatch({ type: ADD_TO_FAVOURITE_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: ADD_TO_FAVOURITE_FAILURE, payload: error});
+        dispatch({ type: ADD_TO_FAVOURITE_FAILURE, payload: error });
     }
 }
 
 export const logout = (navigate) => async (dispatch) => {
     localStorage.removeItem("jwt");
-    dispatch({type: LOGOUT_REQUEST});
+    dispatch({ type: LOGOUT_REQUEST });
     navigate("/");
 }

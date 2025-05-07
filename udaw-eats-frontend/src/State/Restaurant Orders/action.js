@@ -12,13 +12,12 @@ import { api } from "../../component/Config/api";
 export const updateOrderStatus = ({ orderId, orderStatus, jwt }) => async (dispatch) => {
     dispatch({ type: UPDATE_ORDER_STATUS_REQUEST });
     try {
-        const { response } = await api.put(`api/admin/order/${orderId}/${orderStatus}`, {}, {
+        const { data } = await api.put(`api/admin/order/${orderId}/${orderStatus}`, {}, {
             headers: {
                 'Authorization': `Bearer ${jwt}`
             }
         });
-        const updatedOrder = response.data;
-        dispatch({ type: UPDATE_ORDER_STATUS_SUCCESS, payload: updatedOrder });
+        dispatch({ type: UPDATE_ORDER_STATUS_SUCCESS, payload: data });
     } catch (error) {
         dispatch({ type: UPDATE_ORDER_STATUS_FAILURE, payload: error });
     }

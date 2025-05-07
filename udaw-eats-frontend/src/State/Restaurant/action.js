@@ -24,38 +24,36 @@ export const getRestaurantById = (reqData) => {
     return async (dispatch) => {
         dispatch({ type: GET_RESTAURANT_BY_ID_REQUEST });
         try {
+            console.log("Request Data:", reqData); // Debug the reqData object
             const response = await api.get(`api/restaurants/${reqData.restaurantId}`, {
                 headers: {
                     Authorization: `Bearer ${reqData.jwt}`,
                 },
             });
-            dispatch({ type: GET_RESTAURANT_BY_ID_SUCCESS, payload: response.data })
-
+            dispatch({ type: GET_RESTAURANT_BY_ID_SUCCESS, payload: response.data });
+        } catch (error) {
+            console.error("Error fetching restaurant by ID:", error); // Debug the error
+            dispatch({ type: GET_RESTAURANT_BY_ID_FAILURE, payload: error });
         }
-        catch (error) {
-            dispatch({ type: GET_RESTAURANT_BY_ID_FAILURE, payload: error })
-        }
-
-    }
-}
+    };
+};
 
 export const getRestaurantByUser = (jwt) => {
     return async (dispatch) => {
-        dispatch({ type: GET_RESTAURANT_BY_USER_REQUEST });
-        try {
-            const { data } = await api.get(`api/admin/restaurants/user`, {
-                headers: {
-                    Authorization: `Bearer ${jwt}`,
-                },
-            });
-            dispatch({ type: GET_RESTAURANT_BY_USER_SUCCESS, payload: data })
-        }
-        catch (error) {
-            dispatch({ type: GET_RESTAURANT_BY_USER_FAILURE, payload: error.message })
-        }
-
-    }
-}
+      dispatch({ type: GET_RESTAURANT_BY_USER_REQUEST });
+      try {
+        const { data } = await api.get(`api/admin/restaurants/user`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        });
+        dispatch({ type: GET_RESTAURANT_BY_USER_SUCCESS, payload: data });
+      } catch (error) {
+        dispatch({ type: GET_RESTAURANT_BY_USER_FAILURE, payload: error.message });
+        dispatch({ type: GET_RESTAURANT_BY_USER_SUCCESS, payload: null }); // Explicitly set to null
+      }
+    };
+  };
 
 export const createRestaurant = (reqData) => {
     return async (dispatch) => {
@@ -160,7 +158,7 @@ export const createCategory = ({ reqData, jwt }) => {
     }
 }
 
-export const getRestaurantCategory = ({restaurantId, jwt}) => async (dispatch) => {
+export const getRestaurantCategory = ({ restaurantId, jwt }) => async (dispatch) => {
     dispatch({ type: GET_RESTAURANT_CATEGORY_REQUEST });
 
     try {

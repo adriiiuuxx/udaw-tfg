@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 import React, { useState } from 'react'
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -15,6 +14,7 @@ export const MenuCard = ({ item }) => {
     const [selectedIngredients, setSelectedIngredients] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
 
     const handleCheckboxChange = (ingredient) => {
         if (selectedIngredients.includes(ingredient)) {
@@ -34,7 +34,7 @@ export const MenuCard = ({ item }) => {
             cartItem: {
                 foodId: item.id,
                 quantity: 1,
-                ingredients: ingredientNames, 
+                ingredients: ingredientNames,
             }
         };
 
@@ -85,8 +85,13 @@ export const MenuCard = ({ item }) => {
                         }
                     </div>
                     <div className='pt-5'>
-                        <Button variant='contained' disabled={false} type='submit' onClick={() => navigate("/cart")}>
-                            {true ? "Add to Cart" : "Out Of Stock"}
+                        <Button
+                            variant='contained'
+                            disabled={!item.available}
+                            type='submit'
+                            onClick={() => navigate("/cart")}
+                        >
+                            {!item.available ? "Out Of Stock" : "Add to Cart"}
                         </Button>
                     </div>
                 </form>

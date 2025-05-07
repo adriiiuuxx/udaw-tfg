@@ -34,9 +34,7 @@ const validationSchema = Yup.object().shape({
 })
 
 export const Cart = () => {
-    const createOrderUsingSelectedAddress = () => {
 
-    };
     const { cart } = useSelector(store => store)
     const [open, setOpen] = React.useState(false);
     const dispatch = useDispatch();
@@ -97,22 +95,13 @@ export const Cart = () => {
                 </section>
                 <Divider orientation='vertical' flexItem />
                 <section className='lg:w-[70%] px-5 pb-10 lg:pb-0'>
-                    <h1 className='text-center font-semibold text-2xl py-10'>Choose Delivery Address</h1>
+                    <h1 className='text-center font-semibold text-2xl py-10'>Select Address</h1>
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr'>
-                        {[1].map((item, index) => (
-                            <AddressCard
-                                key={index}
-                                handleSelectAddress={createOrderUsingSelectedAddress}
-                                item={item}
-                                showButton={true}
-                                className="h-full"
-                            />
-                        ))}
                         <Card className='w-full p-5 h-full'>
                             <div className='flex gap-5'>
                                 <AddLocationAltIcon />
                                 <div className='space-y-3 text-gray-500'>
-                                    <h1 className='font-semibold text-lg text-white'>Add New Address</h1>
+                                    <h1 className='font-semibold text-lg text-white'>Select Address</h1>
                                     <p>&nbsp;</p>
                                     <Button
                                         variant='outlined'

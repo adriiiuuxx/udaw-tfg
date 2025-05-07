@@ -5,6 +5,7 @@ import es.adrian.udaw_eats.model.Food;
 import es.adrian.udaw_eats.model.IngredientsItem;
 import es.adrian.udaw_eats.model.Restaurant;
 import es.adrian.udaw_eats.repository.FoodRepository;
+import es.adrian.udaw_eats.repository.IngredientRepository;
 import es.adrian.udaw_eats.request.CreateFoodRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,20 @@ public class FoodServiceImpl implements FoodService {
     @Autowired
     private FoodRepository foodRepository;
 
+    @Autowired
+    private IngredientRepository ingredientRepository;
+
     @Override
     public Food createFood(CreateFoodRequest req, Category category, Restaurant restaurant) {
         Food food = new Food();
+        List<IngredientsItem> ingredients = ingredientRepository.findAllById(req.getIngredients());
         food.setFoodCategory(category);
         food.setRestaurant(restaurant);
         food.setDescription(req.getDescription());
         food.setImages(req.getImages());
         food.setName(req.getName());
         food.setPrice(req.getPrice());
-        food.setIngredients(req.getIngredients());
+        food.setIngredients(ingredients);
         food.setVegetarian(req.isVegetarian());
         food.setCreationDate(LocalDateTime.now());
 
