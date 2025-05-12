@@ -8,7 +8,8 @@ import { updateRestaurantStatus } from '../../State/Restaurant/action'
 import { useSelector } from 'react-redux'
 
 export const RestaurantDetails = () => {
-  const { restaurant } = useSelector((store) => store);
+  // Select only the specific part of the state that we need
+  const restaurant = useSelector(state => state.restaurant);
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
 

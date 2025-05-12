@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardHeader, IconButton } from '@mui/material';
+import { Box, Button, Card, CardHeader, IconButton, Snackbar, Alert } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import CreateIcon from '@mui/icons-material/Create';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { CreateIngredientForm } from './CreateIngredientForm';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,19 +27,33 @@ const style = {
 
 export const IngredientsTable = () => {
     const [open, setOpen] = React.useState(false);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success'
+    });
+    
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const { ingredients, restaurant } = useSelector((store) => store);
+    // Select only the specific parts of the state that we need
+    const ingredients = useSelector(state => state.ingredients);
+    const restaurant = useSelector(state => state.restaurant);
 
     useEffect(() => {
         dispatch(getIngredients({ id: restaurant.usersRestaurant.id, jwt }));
     }, [dispatch, restaurant.usersRestaurant.id, jwt]);
 
-    const handleUpdateStock = (id) => {
-        dispatch(updateStock({ id, jwt })); // Dispatch the action
+    const handleSuccess = (message) => {
+        setSnackbar({
+            open: true,
+            message,
+            severity: 'success'
+        });
+        handleClose();
     };
 
     return (
@@ -74,7 +88,14 @@ export const IngredientsTable = () => {
                                     <TableCell align="right">{item.category.name}</TableCell>
                                     <TableCell align="right">
                                         <Button
-                                            onClick={() => handleUpdateStock(item.id)}
+                                            onClick={() => {
+                                                dispatch(updateStock({ id: item.id, jwt }));
+                                                setSnackbar({
+                                                    open: true,
+                                                    message: `${item.name} stock status updated`,
+                                                    severity: 'success'
+                                                });
+                                            }}
                                             variant="contained"
                                             color={item.inStoke ? "success" : "error"}
                                         >
@@ -94,9 +115,26 @@ export const IngredientsTable = () => {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <CreateIngredientForm />
+                        <CreateIngredientForm onSuccess={handleSuccess} />
                     </Box>
                 </Modal>
+
+                {/* Snackbar for notifications */}
+                <Snackbar 
+                    open={snackbar.open} 
+                    autoHideDuration={6000} 
+                    onClose={handleCloseSnackbar}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                >
+                    <Alert 
+                        onClose={handleCloseSnackbar} 
+                        severity={snackbar.severity} 
+                        variant="filled"
+                        sx={{ width: '100%' }}
+                    >
+                        {snackbar.message}
+                    </Alert>
+                </Snackbar>
             </Card>
         </Box>
     );

@@ -43,7 +43,7 @@ export const menuItemReducer = (state = initialState, action) => {
                 )
             };
         case actionType.UPDATE_MENU_ITEMS_AVAILABILITY_SUCCESS:
-            console.log("updated items id ", action.payload.id);
+           /*  console.log("updated items id ", action.payload.id); */
             return {
                 ...state,
                 loading: false,

@@ -7,8 +7,9 @@ import { getRestaurantByUser } from '../State/Restaurant/action';
 
 export const AdminRoute = () => {
   const dispatch = useDispatch();
-  const { usersRestaurant } = useSelector((store) => store.restaurant);
-  const { jwt } = useSelector((store) => store.auth);
+  // Select only the specific parts of the state that we need
+  const { usersRestaurant } = useSelector(state => state.restaurant);
+  const { jwt } = useSelector(state => state.auth);
 
   useEffect(() => {
     if (jwt) {

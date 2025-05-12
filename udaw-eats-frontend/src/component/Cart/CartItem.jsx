@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { findCart, removeCartItem, updateCartItem } from '../../State/Cart/action';
 
 export const CartItem = ({ item }) => {
-    const { auth } = useSelector((store) => store);
+    // Select only the specific part of the state that we need
+    const auth = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
 

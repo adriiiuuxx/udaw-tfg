@@ -3,7 +3,8 @@ import { RestaurantCard } from '../Restaurant/RestaurantCard'
 import { useSelector } from 'react-redux'
 
 export const Favorites = () => {
-    const { auth } = useSelector(store => store)
+    // Select only the specific part of the state that we need
+    const auth = useSelector(state => state.auth)
     return (
         <div>
             <h1 className='py-5 text-xl font-semibold text-center'>My favorites</h1>

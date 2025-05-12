@@ -7,26 +7,40 @@ import Select from '@mui/material/Select';
 import { useDispatch, useSelector } from 'react-redux';
 import { createIngredient } from '../../State/Ingredients/action';
 
-export const CreateIngredientForm = () => {
+export const CreateIngredientForm = ({ onSuccess }) => {
 
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const {ingredients, restaurant } = useSelector((store) => store)
+    // Select only the specific parts of the state that we need
+    const ingredients = useSelector(state => state.ingredients);
+    const restaurant = useSelector(state => state.restaurant);
 
     const [formData, setFormData] = useState({
         name: "",
         categoryId: ""
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const data = {
             ...formData,
             restaurantId: restaurant.usersRestaurant.id
         };
-        console.log(data);
-        dispatch(createIngredient({ data, jwt }));
-
+        
+        try {
+            await dispatch(createIngredient({ data, jwt }));
+            // Reset form
+            setFormData({
+                name: "",
+                categoryId: ""
+            });
+            // Call the onSuccess callback to close the modal and show notification
+            if (onSuccess) {
+                onSuccess(`Ingredient ${formData.name} created successfully`);
+            }
+        } catch (error) {
+            console.error('Error creating ingredient:', error);
+        }
     };
 
 

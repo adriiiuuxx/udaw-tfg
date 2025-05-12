@@ -28,7 +28,7 @@ export const getRestaurantOrders = ({ restaurantId, orderStatus, jwt }) => async
     try {
         const { data } = await api.get(`api/admin/order/restaurant/${restaurantId}`, {
             params: {
-                order_status: orderStatus
+                orderStatus: orderStatus
             },
             headers: {
                 'Authorization': `Bearer ${jwt}`

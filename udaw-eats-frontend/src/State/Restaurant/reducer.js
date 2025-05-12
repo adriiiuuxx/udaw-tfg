@@ -6,7 +6,8 @@ const initialState = {
     restaurant: null,
     loading: false,
     error: null,
-    categories: []
+    categories: [],
+    searchResults: []
 }
 
 export const restaurantReducer = (state = initialState, action) => {
@@ -18,6 +19,7 @@ export const restaurantReducer = (state = initialState, action) => {
         case actionType.GET_RESTAURANT_BY_ID_REQUEST:
         case actionType.CREATE_CATEGORY_REQUEST:
         case actionType.GET_RESTAURANT_CATEGORY_REQUEST:
+        case actionType.SEARCH_RESTAURANT_REQUEST:
             return {
                 ...state,
                 loading: true,
@@ -73,6 +75,12 @@ export const restaurantReducer = (state = initialState, action) => {
                 loading: false,
                 categories: action.payload
             };
+        case actionType.SEARCH_RESTAURANT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                searchResults: action.payload
+            };
         case actionType.CREATE_RESTAURANT_FAILURE:
         case actionType.GET_ALL_RESTAURANT_FAILURE:
         case actionType.UPDATE_RESTAURANT_FAILURE:
@@ -80,6 +88,7 @@ export const restaurantReducer = (state = initialState, action) => {
         case actionType.GET_RESTAURANT_BY_ID_FAILURE:
         case actionType.CREATE_CATEGORY_FAILURE:
         case actionType.GET_RESTAURANT_CATEGORY_FAILURE:
+        case actionType.SEARCH_RESTAURANT_FAILURE:
             return{
                 ...state,
                 loading: false,

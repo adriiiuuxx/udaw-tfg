@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserOrders } from '../../State/Orders/action';
 
 export const Orders = () => {
-  const { auth, order } = useSelector((store) => store);
+  // Select only the specific parts of the state that we need
+  const auth = useSelector(state => state.auth);
+  const order = useSelector(state => state.order);
   const jwt = localStorage.getItem("jwt");
   const dispatch = useDispatch();
 

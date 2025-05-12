@@ -40,7 +40,8 @@ const validationSchema = Yup.object().shape({
 export const RegisterForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { error } = useSelector((store) => store.auth);
+    // Select only the specific part of the state that we need
+    const { error } = useSelector(state => state.auth);
 
     const getErrorMessage = (error) => {
         if (typeof error === 'string') return error;

@@ -21,7 +21,8 @@ import { getRestaurantById } from './State/Restaurant/action';
 function App() {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
-  const { auth } = useSelector(store => store);
+  // Select only the specific part of the state that we need
+  const auth = useSelector(state => state.auth);
 
   useEffect(() => {
     // Only dispatch getUser if we have a valid token

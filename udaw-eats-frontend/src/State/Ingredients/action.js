@@ -49,7 +49,7 @@ export const createIngredient = ({data, jwt}) => async (dispatch) => {
             }
         });
         dispatch({ type: CREATE_INGREDIENT_SUCCESS, payload: response.data });
-        console.log("ingr created: ", response.data);
+        /* console.log("ingr created: ", response.data); */
     } catch (error) {
         dispatch({ type: CREATE_INGREDIENT_FAILURE, payload: error });
     }
@@ -64,7 +64,7 @@ export const createIngredientCategory = ({data, jwt}) => async (dispatch) => {
             }
         });
         dispatch({ type: CREATE_INGREDIENT_CATEGORY_SUCCESS, payload: response.data });
-        console.log("cat created: ", response.data);
+        /* console.log("cat created: ", response.data); */
         
     } catch (error) {
         dispatch({ type: CREATE_INGREDIENT_CATEGORY_FAILURE, payload: error });

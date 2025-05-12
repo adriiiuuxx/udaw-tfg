@@ -21,7 +21,7 @@ export const createOrder = (reqData) => async (dispatch) => {
         if(data.payment_url){
             window.location.href = data.payment_url;
         }
-        console.log("user orders: ", data);
+        /* console.log("user orders: ", data); */
         
         dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
     } catch (error) {
@@ -37,7 +37,7 @@ export const getUserOrders = (jwt) => async (dispatch) => {
                 'Authorization': `Bearer ${jwt}`
             }
         });
-        console.log("user orders: " , data)
+        /* console.log("user orders: " , data); */
         dispatch({ type: GET_USER_ORDERS_SUCCESS, payload: data });
     } catch (error) {
         dispatch({ type: GET_USER_ORDERS_FAILURE, payload: error});

@@ -12,14 +12,15 @@ export const RestaurantCard = ({ item }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const { auth } = useSelector(store => store);
+    // Select only the specific part of the state that we need
+    const auth = useSelector(state => state.auth);
 
     const handleAddToFavorites = () => {
         dispatch(addToFavorites({ restaurantId: item.id, jwt }));
     };
 
-    const handleNavigateToRestaurant = () =>{
-        if(item.opened){
+    const handleNavigateToRestaurant = () => {
+        if (item.opened) {
             navigate(`/restaurant/${item.name}/${item.id}`)
         }
     }
@@ -30,9 +31,11 @@ export const RestaurantCard = ({ item }) => {
         <Card className='w-[18rem]'>
             <div className={`${true ? 'cursor-pointer' : "cursor-not-allowed"} relative`}>
                 <img
-                    className='w-full h-[10rem] object-cover rounded-t-md'
+                    className='w-full h-[10rem] object-cover rounded-t-mdcursor-pointer' 
+                    onClick={handleNavigateToRestaurant}
                     src={item.images?.[0] || 'default-image-url.jpg'}
                     alt={item.name || item.title || 'Restaurant'}
+
                 />
 
                 <Chip

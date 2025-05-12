@@ -9,7 +9,8 @@ import { getAllRestaurants } from '../../State/Restaurant/action'
 export const Home = () => {
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const { restaurant } = useSelector(store => store)
+    // Select only the specific part of the state that we need
+    const restaurant = useSelector(state => state.restaurant)
 
     useEffect(() => {
         dispatch(getAllRestaurants(jwt))

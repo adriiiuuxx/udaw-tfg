@@ -7,7 +7,7 @@ export const loginUser = (reqData => async (dispatch) => {
     try {
         const { data } = await axios.post(`${API_BASE_URL}auth/signin`, reqData.userData);
 
-        console.log("Login Response:", data); // Debug the API response
+        /* console.log("Login Response:", data);  */
 
         if (data.jwt) {
             localStorage.setItem("jwt", data.jwt);
@@ -20,7 +20,7 @@ export const loginUser = (reqData => async (dispatch) => {
             reqData.navigate("/");
         }
     } catch (error) {
-        console.error("Login Error:", error.response?.data); // Debug the error
+        /* console.error("Login Error:", error.response?.data); */ 
         dispatch({ type: LOGIN_FAILURE, payload: error.response.data });
     }
 });

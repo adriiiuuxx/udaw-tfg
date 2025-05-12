@@ -3,23 +3,38 @@ import { Button, TextField } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { createIngredientCategory } from '../../State/Ingredients/action';
 
-export const CreateIngredientCategoryForm = () => {
+export const CreateIngredientCategoryForm = ({ onSuccess }) => {
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const { restaurant } = useSelector((store) => store)
+    // Select only the specific part of the state that we need
+    const restaurant = useSelector(state => state.restaurant)
 
     const [formData, setFormData] = useState({ name: "" });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const data = {
             name: formData.name,
             restaurantId: restaurant.usersRestaurant.id
         };
-        console.log(formData);
-
-        dispatch(createIngredientCategory({ data, jwt }));
+        
+        try {
+            await dispatch(createIngredientCategory({ data, jwt }));
+            
+            // Reset form
+            setFormData({ name: "" });
+            
+            // Call the onSuccess callback to close the modal and show notification
+            if (onSuccess) {
+                onSuccess(`Ingredient category ${formData.name} created successfully`);
+            }
+        } catch (error) {
+            /* console.error('Error creating ingredient category:', error); */
+            if (onSuccess) {
+                onSuccess(`Error creating category: ${error.message}`, 'error');
+            }
+        }
     };
 
 

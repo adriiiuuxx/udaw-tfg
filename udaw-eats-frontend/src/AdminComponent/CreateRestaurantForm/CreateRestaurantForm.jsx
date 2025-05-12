@@ -1,13 +1,40 @@
-import { Button, CircularProgress, Grid, IconButton, TextField } from '@mui/material';
+/**
+ * @fileoverview Create Restaurant Form Component
+ * 
+ * This file contains the CreateRestaurantForm component, which provides a comprehensive form
+ * for restaurant owners to register their restaurant in the UDAW-Eats platform.
+ * 
+ * The form includes validation for all fields using Yup schema validation and handles
+ * image uploads to Cloudinary. It collects all necessary information to create a complete
+ * restaurant profile including:
+ * - Basic restaurant information (name, description, cuisine type)
+ * - Address information (street, city, state, zip code)
+ * - Contact information (email, mobile, Instagram)
+ * - Opening hours
+ * - Restaurant images
+ * 
+ * @requires @mui/material
+ * @requires formik
+ * @requires yup
+ * @requires react-redux
+ */
+import { Button, CircularProgress, Grid, IconButton, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik'
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import CloseIcon from '@mui/icons-material/Close';
+import InfoIcon from '@mui/icons-material/Info';
 import React, { useState } from 'react'
 import { uploadImageToCloudinary } from '../Admin/Utils/uploadToCloudinary';
 import { useDispatch } from 'react-redux';
 import { createRestaurant } from '../../State/Restaurant/action';
 import * as Yup from "yup";
 
+/**
+ * Initial values for the restaurant creation form
+ * 
+ * These values define the starting state of the form fields before user input.
+ * Each property corresponds to a form field in the CreateRestaurantForm component.
+ */
 const initialValues = {
   name: "",
   description: "",
@@ -23,6 +50,17 @@ const initialValues = {
   images: []
 };
 
+/**
+ * Validation schema for the restaurant creation form
+ * 
+ * This schema defines validation rules for each form field using Yup.
+ * It ensures that all required data is provided in the correct format before submission.
+ * 
+ * Key validations include:
+ * - Required fields (name, description, address fields, contact information)
+ * - Format validation (email format, phone number format, postal code format)
+ * - Length requirements (minimum characters for name and description)
+ */
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .required("Name is required")
@@ -54,14 +92,47 @@ const validationSchema = Yup.object().shape({
     .required("Opening Hours are required"),
 });
 
+/**
+ * CreateRestaurantForm Component
+ * 
+ * This component provides a form for restaurant owners to register their restaurant
+ * in the UDAW-Eats platform. It handles form validation, image uploads, and submission
+ * to the backend API.
+ * 
+ * The form is divided into sections for different types of information:
+ * - Basic restaurant details
+ * - Address information
+ * - Contact information
+ * - Restaurant images
+ * 
+ * It includes a recommendation message advising users to upload at least 3 images
+ * for better presentation of their restaurant.
+ * 
+ * @returns {JSX.Element} The rendered CreateRestaurantForm component
+ */
 export const CreateRestaurantForm = () => {
   const [uploadImage, setUploadImage] = useState(false);
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
 
+  /**
+   * Formik configuration for form handling
+   * 
+   * Uses the Formik library to manage form state, validation, and submission.
+   * The form uses the predefined initialValues and validationSchema.
+   */
   const formik = useFormik({
     initialValues,
-    validationSchema, // Add validation schema here
+    validationSchema,
+    /**
+     * Form submission handler
+     * 
+     * This function is called when the form is submitted and all validation passes.
+     * It restructures the form data into the format expected by the API and dispatches
+     * the createRestaurant action to the Redux store.
+     * 
+     * @param {Object} values - The validated form values
+     */
     onSubmit: (values) => {
       const data = {
         name: values.name,
@@ -81,12 +152,20 @@ export const CreateRestaurantForm = () => {
         openingHours: values.openingHours,
         images: values.images,
       };
-      console.log("data -->", data);
 
       dispatch(createRestaurant({data,token:jwt}))
     },
   });
 
+  /**
+   * Handles image file selection and upload
+   * 
+   * This function is triggered when a user selects an image file to upload.
+   * It uploads the selected image to Cloudinary and adds the resulting URL
+   * to the form's images array.
+   * 
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The file input change event
+   */
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -102,6 +181,14 @@ export const CreateRestaurantForm = () => {
     }
   };
 
+  /**
+   * Removes an image from the form's images array
+   * 
+   * This function is triggered when a user clicks the remove button on an uploaded image.
+   * It filters out the image at the specified index from the form's images array.
+   * 
+   * @param {number} index - The index of the image to remove
+   */
   const handleRemoveImage = (index) => {
     const updatedImages = formik.values.images.filter((_, i) => i !== index);
     formik.setFieldValue("images", updatedImages);
@@ -113,6 +200,16 @@ export const CreateRestaurantForm = () => {
         <h1 className='font-bold text-2xl text-center py-2'>Add New Restaurant</h1>
         <form onSubmit={formik.handleSubmit} className='space-y-4'>
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <div className="mb-4">
+                <div className="border border-blue-500 bg-blue-900 bg-opacity-30 p-3 rounded-md">
+                  <Typography variant="body2" className="text-blue-300 flex items-center">
+                    <InfoIcon className="mr-2" fontSize="small" color="primary" />
+                    It's recommended to upload at least 3 images for better presentation of your restaurant
+                  </Typography>
+                </div>
+              </div>
+            </Grid>
             <Grid className='flex flex-wrap gap-5' size={{ xs: 12 }}>
               <input
                 type="file"

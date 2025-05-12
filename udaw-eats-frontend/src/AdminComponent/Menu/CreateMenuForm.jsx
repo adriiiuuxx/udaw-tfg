@@ -62,7 +62,9 @@ export const CreateMenuForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const jwt = localStorage.getItem("jwt");
-    const { ingredients, restaurant } = useSelector((store) => store)
+    // Select only the specific parts of the state that we need
+    const ingredients = useSelector(state => state.ingredients);
+    const restaurant = useSelector(state => state.restaurant);
 
 
     useEffect(() => {

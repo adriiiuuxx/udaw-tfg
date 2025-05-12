@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { api } from "../../component/Config/api"
-import { CREATE_CATEGORY_FAILURE, CREATE_CATEGORY_REQUEST, CREATE_CATEGORY_SUCCESS, CREATE_RESTAURANT_FAILURE, CREATE_RESTAURANT_REQUEST, CREATE_RESTAURANT_SUCCESS, DELETE_RESTAURANT_FAILURE, DELETE_RESTAURANT_REQUEST, DELETE_RESTAURANT_SUCCESS, GET_ALL_RESTAURANT_FAILURE, GET_ALL_RESTAURANT_REQUEST, GET_ALL_RESTAURANT_SUCCESS, GET_RESTAURANT_BY_ID_FAILURE, GET_RESTAURANT_BY_ID_REQUEST, GET_RESTAURANT_BY_ID_SUCCESS, GET_RESTAURANT_BY_USER_FAILURE, GET_RESTAURANT_BY_USER_REQUEST, GET_RESTAURANT_BY_USER_SUCCESS, GET_RESTAURANT_CATEGORY_FAILURE, GET_RESTAURANT_CATEGORY_REQUEST, GET_RESTAURANT_CATEGORY_SUCCESS, UPDATE_RESTAURANT_FAILURE, UPDATE_RESTAURANT_REQUEST, UPDATE_RESTAURANT_STATUS_FAILURE, UPDATE_RESTAURANT_STATUS_REQUEST, UPDATE_RESTAURANT_STATUS_SUCCESS, UPDATE_RESTAURANT_SUCCESS } from "./actionType";
+import { CREATE_CATEGORY_FAILURE, CREATE_CATEGORY_REQUEST, CREATE_CATEGORY_SUCCESS, CREATE_RESTAURANT_FAILURE, CREATE_RESTAURANT_REQUEST, CREATE_RESTAURANT_SUCCESS, DELETE_RESTAURANT_FAILURE, DELETE_RESTAURANT_REQUEST, DELETE_RESTAURANT_SUCCESS, GET_ALL_RESTAURANT_FAILURE, GET_ALL_RESTAURANT_REQUEST, GET_ALL_RESTAURANT_SUCCESS, GET_RESTAURANT_BY_ID_FAILURE, GET_RESTAURANT_BY_ID_REQUEST, GET_RESTAURANT_BY_ID_SUCCESS, GET_RESTAURANT_BY_USER_FAILURE, GET_RESTAURANT_BY_USER_REQUEST, GET_RESTAURANT_BY_USER_SUCCESS, GET_RESTAURANT_CATEGORY_FAILURE, GET_RESTAURANT_CATEGORY_REQUEST, GET_RESTAURANT_CATEGORY_SUCCESS, SEARCH_RESTAURANT_FAILURE, SEARCH_RESTAURANT_REQUEST, SEARCH_RESTAURANT_SUCCESS, UPDATE_RESTAURANT_FAILURE, UPDATE_RESTAURANT_REQUEST, UPDATE_RESTAURANT_STATUS_FAILURE, UPDATE_RESTAURANT_STATUS_REQUEST, UPDATE_RESTAURANT_STATUS_SUCCESS, UPDATE_RESTAURANT_SUCCESS } from "./actionType";
 
 export const getAllRestaurants = (token) => {
     return async (dispatch) => {
@@ -24,7 +25,7 @@ export const getRestaurantById = (reqData) => {
     return async (dispatch) => {
         dispatch({ type: GET_RESTAURANT_BY_ID_REQUEST });
         try {
-            console.log("Request Data:", reqData); // Debug the reqData object
+           /*  console.log("Request Data:", reqData); */
             const response = await api.get(`api/restaurants/${reqData.restaurantId}`, {
                 headers: {
                     Authorization: `Bearer ${reqData.jwt}`,
@@ -32,7 +33,7 @@ export const getRestaurantById = (reqData) => {
             });
             dispatch({ type: GET_RESTAURANT_BY_ID_SUCCESS, payload: response.data });
         } catch (error) {
-            console.error("Error fetching restaurant by ID:", error); // Debug the error
+           /*  console.error("Error fetching restaurant by ID:", error); */
             dispatch({ type: GET_RESTAURANT_BY_ID_FAILURE, payload: error });
         }
     };
@@ -65,7 +66,7 @@ export const createRestaurant = (reqData) => {
                 },
             });
             dispatch({ type: CREATE_RESTAURANT_SUCCESS, payload: data })
-            console.log("created restaurant ");
+           /*  console.log("created restaurant "); */
 
         }
         catch (error) {
@@ -87,7 +88,7 @@ export const updateRestaurant = ({ restaurantId, restaurantData, jwt }) => {
                 },
             });
             dispatch({ type: UPDATE_RESTAURANT_SUCCESS, payload: res.data })
-            console.log("restaurant updated ");
+           /*  console.log("restaurant updated "); */
 
         }
         catch (error) {
@@ -106,7 +107,7 @@ export const deleteRestaurant = ({ restaurantId, jwt }) => {
                     Authorization: `Bearer ${jwt}`,
                 },
             });
-            console.log("deleted restaurant: ", res.data);
+           /*  console.log("deleted restaurant: ", res.data); */
             dispatch({ type: DELETE_RESTAURANT_SUCCESS, payload: restaurantId })
         }
         catch (error) {
@@ -127,7 +128,7 @@ export const updateRestaurantStatus = ({ restaurantId, jwt }) => {
                         Authorization: `Bearer ${jwt}`,
                     },
                 });
-            console.log("updated restaurant status: ", res.data);
+           /*  console.log("updated restaurant status: ", res.data); */
             dispatch({ type: UPDATE_RESTAURANT_STATUS_SUCCESS, payload: res.data })
         }
         catch (error) {
@@ -148,7 +149,7 @@ export const createCategory = ({ reqData, jwt }) => {
                         Authorization: `Bearer ${jwt}`,
                     },
                 });
-            console.log("cat created: ", res.data);
+           /*  console.log("cat created: ", res.data); */
             dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: res.data })
         }
         catch (error) {
@@ -169,10 +170,31 @@ export const getRestaurantCategory = ({ restaurantId, jwt }) => async (dispatch)
         });
         dispatch({ type: GET_RESTAURANT_CATEGORY_SUCCESS, payload: data });
     } catch (error) {
-        console.error("Error fetching restaurant categories:", error);
+        /* console.error("Error fetching restaurant categories:", error); */
         dispatch({
             type: GET_RESTAURANT_CATEGORY_FAILURE,
             payload: error.response?.data?.message || "Failed to fetch categories"
         });
+    }
+};
+
+export const searchRestaurant = ({ keyword, jwt }) => async (dispatch) => {
+    dispatch({ type: SEARCH_RESTAURANT_REQUEST });
+
+    try {
+        const { data } = await api.get(`api/restaurants/search?keyword=${keyword}`, {
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        });
+        dispatch({ type: SEARCH_RESTAURANT_SUCCESS, payload: data });
+        return data;
+    } catch (error) {
+        /* console.error("Error searching restaurants:", error); */
+        dispatch({
+            type: SEARCH_RESTAURANT_FAILURE,
+            payload: error.response?.data?.message || "Failed to search restaurants"
+        });
+        return [];
     }
 };

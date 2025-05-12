@@ -3,25 +3,42 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { createCategory } from '../../State/Restaurant/action';
 
-export const CreateFoodCategoryForm = () => {
-    const { restaurant } = useSelector((store) => store);
+export const CreateFoodCategoryForm = ({ onSuccess }) => {
+    // We still need the restaurant ID for logging purposes
+    // Select only the specific part of the state that we need
+    const restaurant = useSelector(state => state.restaurant);
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Let the backend handle ID generation
         const data = {
-            name: formData.categoryName,
-            restaurantId: {
-                id: restaurant.usersRestaurant?.id,
-            },
+            name: formData.categoryName
+            // The restaurant will be set on the backend based on the JWT
         };
-        dispatch(createCategory({
-            reqData: data,
-            jwt: jwt
-        }));
-        console.log(data);
-
+        
+        try {
+            console.log('Sending category data:', data, 'for restaurant:', restaurant.usersRestaurant?.id);
+            await dispatch(createCategory({
+                reqData: data,
+                jwt: jwt
+            }));
+            
+            // Reset form
+            setFormData({ categoryName: "", restaurantId: "" });
+            
+            // Call the onSuccess callback to close the modal and show notification
+            if (onSuccess) {
+                onSuccess(`Food category ${formData.categoryName} created successfully`);
+            }
+        } catch (error) {
+            /* console.error('Error creating food category:', error); */
+            if (onSuccess) {
+                onSuccess(`Error creating category: ${error.message}`, 'error');
+            }
+        }
     };
 
     const [formData, setFormData] = useState({ categoryName: "", restaurantId: "" });

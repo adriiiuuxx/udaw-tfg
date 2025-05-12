@@ -1,4 +1,4 @@
-import { Box, Card, CardHeader, IconButton } from '@mui/material'
+import { Box, Card, CardHeader, IconButton, Snackbar, Alert } from '@mui/material'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import CreateIcon from '@mui/icons-material/Create';
-import React from 'react'
+import React, { useState } from 'react'
 import { CreateFoodCategoryForm } from './CreateFoodCategoryForm';
 import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,19 +27,40 @@ const style = {
 };
 
 export const FoodCategoryTable = () => {
-    const { restaurant } = useSelector((store) => store);
+    // Select only the specific part of the state that we need
+    const restaurant = useSelector(state => state.restaurant);
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
     const [open, setOpen] = React.useState(false);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success'
+    });
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
-      useEffect(() => {
+    const handleSuccess = (message, severity = 'success') => {
+        setSnackbar({
+            open: true,
+            message,
+            severity: severity
+        });
+        
+        // Only close the modal on success
+        if (severity === 'success') {
+            handleClose();
+        }
+    };
+
+    useEffect(() => {
         dispatch(getRestaurantCategory({
-          jwt,
-          restaurantId: restaurant.usersRestaurant?.id
+            jwt,
+            restaurantId: restaurant.usersRestaurant?.id
         }))
-      }, [dispatch, jwt, restaurant.usersRestaurant?.id]);
+    }, [dispatch, jwt, restaurant.usersRestaurant?.id]);
     
     return (
         <Box>
@@ -81,9 +102,26 @@ export const FoodCategoryTable = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <CreateFoodCategoryForm />
+                    <CreateFoodCategoryForm onSuccess={handleSuccess} />
                 </Box>
             </Modal>
+
+            {/* Snackbar for notifications */}
+            <Snackbar 
+                open={snackbar.open} 
+                autoHideDuration={6000} 
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert 
+                    onClose={handleCloseSnackbar} 
+                    severity={snackbar.severity} 
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }

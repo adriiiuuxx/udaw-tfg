@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 export const UserProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector(store => store.auth);
+  // Select only the specific part of the state that we need
+  const { user } = useSelector(state => state.auth);
 
   const handleLogout = () => {
       dispatch(logout(navigate));
