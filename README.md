@@ -1,5 +1,7 @@
 # 🍽️ UDAW-EATS
 
+![UDAW-EATS Logo](udaw-eats-frontend/public/assets/favicon.ico)
+
 ## 📖 Introduction
 
 UDAW-EATS is a comprehensive food delivery application designed to celebrate and promote Galician culture and gastronomy. This platform connects local Galician restaurants with customers, making authentic regional cuisine accessible to everyone. 
@@ -38,6 +40,7 @@ The application features a user-friendly interface for customers to browse resta
 ## 🚀 Setup Instructions
 
 ### 📋 Prerequisites
+
 - ☕ Java 21 or higher
 - 📦 Node.js 16 or higher
 - 🐬 MySQL 8.0 or higher
@@ -49,7 +52,7 @@ The application features a user-friendly interface for customers to browse resta
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/udaw-tfg.git
+   git clone https://github.com/adriiiuuxx/udaw-tfg.git
    cd udaw-tfg
    ```
 

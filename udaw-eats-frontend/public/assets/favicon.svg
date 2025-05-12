@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="248" fill="#3F8EFC" stroke="#FFFFFF" stroke-width="16"/>
+  
+  <!-- Plate -->
+  <circle cx="256" cy="256" r="150" fill="#FFFFFF"/>
+  <circle cx="256" cy="256" r="140" fill="#F5F5F5" stroke="#EEEEEE" stroke-width="4"/>
+  
+  <!-- Fork and knife -->
+  <rect x="190" y="130" width="16" height="180" rx="8" transform="rotate(-30 190 130)" fill="#333333"/>
+  <rect x="310" y="130" width="16" height="180" rx="8" transform="rotate(30 310 130)" fill="#333333"/>
+  <rect x="256" y="130" width="16" height="180" rx="8" fill="#333333"/>
+  
+  <!-- Food item -->
+  <circle cx="256" cy="256" r="60" fill="#FF6B6B"/>
+  <path d="M256 216 C290 216 310 236 310 256 C310 276 290 296 256 296 C222 296 202 276 202 256 C202 236 222 216 256 216Z" fill="#FF9E9E"/>
+</svg>

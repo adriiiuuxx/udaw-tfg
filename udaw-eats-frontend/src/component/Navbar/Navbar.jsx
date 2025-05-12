@@ -61,7 +61,7 @@ export const Navbar = ({ onSidebarOpen, showSidebarButton }) => {
                         <MenuIcon fontSize="large" style={{ color: '#fff' }} />
                     </button>
                 )}
-                <li onClick={() => navigate("/")} className="logo font-semibold text-gray-300 text-2x1"> UDAW-EATS</li>
+                <li onClick={() => navigate("/")} className="logo font-semibold text-gray-300 text-2x1"> UDAW EATS</li>
             </div>
 
             <div className="flex items-center space-x-2 lg:space-x-10">
