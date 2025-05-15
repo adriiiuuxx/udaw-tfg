@@ -4,7 +4,6 @@ import com.stripe.Stripe;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import es.adrian.udaw_eats.dto.OrderDto;
-import es.adrian.udaw_eats.model.Order;
 import es.adrian.udaw_eats.response.PaymentResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,9 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Value("${stripe.api.key}")
     private String stripeSecretKey;
+    
+    @Value("${frontend.base.url:http://localhost}")
+    private String frontendBaseUrl;
 
     @Override
     public PaymentResponse createPaymentLink(OrderDto order) throws Exception {
@@ -28,8 +30,8 @@ public class PaymentServiceImpl implements PaymentService{
                 SessionCreateParams.PaymentMethodType.PAYPAL
         )
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:5173/payment/success/"+order.getId())
-                .setCancelUrl("http://localhost:5173/payment/failure")
+                .setSuccessUrl(frontendBaseUrl + "/payment/success/"+order.getId())
+                .setCancelUrl(frontendBaseUrl + "/payment/failure")
                 .addLineItem(SessionCreateParams.LineItem.builder()
                         .setQuantity(1L)
                         .setPriceData(SessionCreateParams.LineItem.PriceData.builder()

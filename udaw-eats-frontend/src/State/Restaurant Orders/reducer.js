@@ -1,4 +1,4 @@
-import * as actionType from "./actiontype";
+import * as actionType from "./actionType";
 
 const initialState = {
     orders: [],

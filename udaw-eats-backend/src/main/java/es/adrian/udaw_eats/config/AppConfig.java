@@ -25,8 +25,10 @@ public class AppConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(Authorize -> Authorize
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Allow OPTIONS requests for CORS preflight
                         .requestMatchers("/api/admin/**").hasAnyRole("RESTAURANT_OWNER", "ADMIN")
-                        .requestMatchers("api/**").authenticated()
+                        .requestMatchers("/auth/**").permitAll()  // Explicitly allow auth endpoints
+                        .requestMatchers("/api/**").authenticated() // Note the leading slash
                         .anyRequest().permitAll()
                 ).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
@@ -41,7 +43,12 @@ public class AppConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration cfg = new CorsConfiguration();
                 cfg.setAllowedOrigins(Arrays.asList(
-                        "http://localhost:5173"
+                        "http://localhost:5173",
+                        "http://localhost:4173",
+                        "http://localhost",
+                        "http://localhost:80",
+                        "http://frontend-udaw",
+                        "http://frontend-udaw:80"
                 ));
                 cfg.setAllowedMethods(Collections.singletonList("*"));
                 cfg.setAllowCredentials(true);

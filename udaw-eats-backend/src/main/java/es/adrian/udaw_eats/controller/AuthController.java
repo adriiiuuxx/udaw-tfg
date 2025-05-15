@@ -85,18 +85,24 @@ public class AuthController {
         String username = req.getEmail();
         String password = req.getPassword();
 
-        Authentication authentication = authenticate(username, password);
+        try {
+            Authentication authentication = authenticate(username, password);
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        String role = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
-        String jwt = jwtProvider.generateToken(authentication);
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            String role = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
+            String jwt = jwtProvider.generateToken(authentication);
 
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setJwt(jwt);
-        authResponse.setMessage("Login succeed");
-        authResponse.setRole(USER_ROLE.valueOf(role));
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setJwt(jwt);
+            authResponse.setMessage("Login succeed");
+            authResponse.setRole(USER_ROLE.valueOf(role));
 
-        return new ResponseEntity<>(authResponse, HttpStatus.OK);
+            return new ResponseEntity<>(authResponse, HttpStatus.OK);
+        } catch (BadCredentialsException e) {
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setMessage(e.getMessage());
+            return new ResponseEntity<>(authResponse, HttpStatus.UNAUTHORIZED);
+        }
     }
 
     private Authentication authenticate(String username, String password) {

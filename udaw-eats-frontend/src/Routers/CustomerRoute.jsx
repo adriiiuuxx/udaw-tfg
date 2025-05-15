@@ -6,7 +6,7 @@ import { RestaurantDetails } from '../component/Restaurant/RestaurantDetails'
 import { Cart } from '../component/Cart/Cart'
 import { Profile } from '../component/Profile/Profile'
 import { Auth } from '../component/Auth/Auth'
-import { PaymentSuccess } from '../component/Payment/paymentSuccess'
+import { PaymentSuccess } from '../component/Payment/PaymentSuccess'
 
 export const CustomerRoute = () => {
     return (

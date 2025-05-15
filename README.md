@@ -1,6 +1,6 @@
 # 🍽️ UDAW-EATS
 
-![UDAW-EATS Logo](udaw-eats-frontend/public/assets/favicon.ico)
+![UDAW-EATS Logo](udaw-eats-frontend/public/assets/favicon.png)
 
 ## 📖 Introduction
 
@@ -37,17 +37,45 @@ The application features a user-friendly interface for customers to browse resta
 - 📝 Formik and Yup for form validation
 - ⚡ Vite as build tool
 
-## 🚀 Setup Instructions
+## 🚀 Installation Options
 
-### 📋 Prerequisites
+UDAW-Eats can be installed and run in two different ways using Docker:
 
-- ☕ Java 21 or higher
-- 📦 Node.js 16 or higher
-- 🐬 MySQL 8.0 or higher
-- 🏗️ Maven 3.6 or higher
+### 🐳 Option 1: Docker Compose Setup
+
+Build and run the application using Docker Compose from the source code.
+
+**Best for**: Testing in an isolated environment that mirrors production.
+
+**Prerequisites**:
+- 🐳 Docker and Docker Compose
 - 📂 Git
 
-### ⚙️ Backend Setup
+### 🚢 Option 2: Docker Hub Images
+
+Run the application using pre-built Docker images from Docker Hub.
+
+**Best for**: Quick deployment without building anything locally.
+
+**Prerequisites**:
+- 🐳 Docker and Docker Compose
+
+> **Note**: For local development setup without Docker (running directly on your machine), please check the commit before this one. The previous version contains detailed instructions for setting up the development environment with Java, Node.js, and MySQL installed locally.
+
+📚 **For detailed installation instructions for both options, see [INSTALLATION-GUIDE.md](INSTALLATION-GUIDE.md)**
+
+## 🚀 Docker Setup Instructions
+
+> **Note**: The detailed setup instructions below are for the local development environment. For the current Docker-based approach, please refer to the [INSTALLATION-GUIDE.md](INSTALLATION-GUIDE.md) file.
+>
+> If you want to run the application directly on your machine without Docker, please check the commit before this one, which contains the complete local development setup instructions.
+
+### Docker Prerequisites
+
+- 🐳 Docker and Docker Compose
+- 📂 Git (if cloning the repository)
+
+### Option 1: Building Docker Containers Locally
 
 1. **Clone the repository**
 
@@ -56,48 +84,58 @@ The application features a user-friendly interface for customers to browse resta
    cd udaw-tfg
    ```
 
-2. **Configure MySQL Database**
-   - Create a MySQL database named `udaw_eats`
-   ```sql
-   CREATE DATABASE udaw_eats;
-   ```
-   - Ensure your MySQL server is running on port 3306
-   - The application uses the following database credentials (as specified in `application.properties`):
-     - Username: `root`
-     - Password: `9999`
-   - If you need to use different credentials, update the `application.properties` file
+2. **Create .env file**
 
-3. **Build and Run the Backend**
+   Create a file named `.env` with the following content:
+   ```
+   MYSQL_ROOT_PASSWORD=9999
+   MYSQL_DATABASE=udaw_eats
+   SPRING_DATASOURCE_URL=jdbc:mysql://mysql-udaw:3306/udaw_eats
+   SPRING_DATASOURCE_USERNAME=root
+   SPRING_DATASOURCE_PASSWORD=9999
+   STRIPE_API_KEY=sk_test_your_stripe_api_key
+   ```
+
+3. **Build and start the containers**
 
    ```bash
-   cd udaw-eats-backend
-   mvn clean install
-   mvn spring-boot:run
+   docker-compose up -d
    ```
-   - The backend server will start on port 8080
-   - API will be accessible at http://localhost:8080
 
-### 🖥️ Frontend Setup
-
-1. **Navigate to the frontend directory**
+4. **Import the database data**
 
    ```bash
-   cd ../udaw-eats-frontend
+   docker exec -i mysql-udaw mysql -uroot -p9999 udaw_eats < udaw_eats_data.sql
    ```
 
-2. **Install dependencies**
+### Option 2: Using Pre-built Docker Hub Images
+
+1. **Create a project directory**
 
    ```bash
-   npm install
+   mkdir udaw-eats
+   cd udaw-eats
    ```
 
-3. **Start the development server**
+2. **Download the docker-compose.dist.yml file**
+
+3. **Rename and run**
 
    ```bash
-   npm run dev
+   mv docker-compose.dist.yml docker-compose.yml
+   docker-compose pull
+   docker-compose up -d
    ```
-   - The frontend development server will start on port 5173
-   - Access the application at http://localhost:5173
+
+4. **Import the database data**
+
+   ```bash
+   docker exec -i mysql-udaw mysql -uroot -p9999 udaw_eats < udaw_eats_data.sql
+   ```
+
+The application will be available at:
+- Frontend: http://localhost
+- Backend API: http://localhost:8080
 
 ## 🗄️ Key Entities
 

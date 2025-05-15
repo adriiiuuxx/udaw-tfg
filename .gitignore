@@ -1,0 +1,95 @@
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Database files
+*.sql
+!udaw_eats_data.sql
+local_udaw_eats_backup.sql
+
+# Docker volumes
+/docker-volumes/
+
+# Compiled Java classes
+/target/
+/udaw-eats-backend/target/
+*.class
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Node.js
+/node_modules/
+/udaw-eats-frontend/node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Build directories
+/udaw-eats-frontend/dist/
+/udaw-eats-frontend/build/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+
+# Sensitive information
+**/application-local.properties
+**/application-dev.properties
+**/application-prod.properties
+
+# Stripe API keys (if stored in separate files)
+stripe-keys.json
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+
+# Test coverage
+/coverage/
+.nyc_output/
+
+# Dependency directories
+.pnp/
+.pnp.js
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history

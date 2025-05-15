@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0-debian
+    container_name: mysql-udaw
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - udaw-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./udaw-eats-backend
+    container_name: backend-udaw
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      STRIPE_API_KEY: ${STRIPE_API_KEY}
+      FRONTEND_BASE_URL: http://localhost
+    ports:
+      - "8080:8080"
+    networks:
+      - udaw-network
+
+  frontend:
+    build: ./udaw-eats-frontend
+    container_name: frontend-udaw
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - udaw-network
+
+networks:
+  udaw-network:
+    driver: bridge
+
+volumes:
+  mysql-data:

@@ -5,7 +5,7 @@ import {
     GET_RESTAURANT_ORDERS_REQUEST,
     GET_RESTAURANT_ORDERS_SUCCESS,
     GET_RESTAURANT_ORDERS_FAILURE
-} from './actiontype';
+} from './actionType';
 
 import { api } from "../../component/Config/api";
 

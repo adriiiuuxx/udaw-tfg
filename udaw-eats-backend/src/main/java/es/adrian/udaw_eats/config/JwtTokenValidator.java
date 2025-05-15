@@ -63,12 +63,25 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        // Skip JWT validation for authentication endpoints and OPTIONS requests
+        String requestPath = request.getRequestURI();
+        String requestMethod = request.getMethod();
+
+        // Skip validation for auth endpoints and OPTIONS requests (CORS preflight)
+        if (requestPath.startsWith("/auth/") || "OPTIONS".equalsIgnoreCase(requestMethod)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String jwt = request.getHeader(JwtConstant.JWT_HEADER);
 
-        //
+        // If no JWT is present, proceed without authentication for public endpoints
+        if (jwt == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-        if (jwt != null){
+        if (jwt.startsWith("Bearer ")){
             jwt = jwt.substring(7); // Bearer *token  -> The reason of that substring(7) is the position of that *
 
             try{
