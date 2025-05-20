@@ -29,15 +29,18 @@ export const registerUser = (reqData => async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST });
     try {
         const { data } = await axios.post(`${API_BASE_URL}auth/signup`, reqData.userData);
-        if (data.jwt) {
-            localStorage.setItem("jwt", data.jwt);
-        }
+        
+        // Store JWT temporarily for the success message, but don't use it for navigation
         dispatch({ type: REGISTER_SUCCESS, payload: data.jwt });
-        if (data.role === "ROLE_RESTAURANT_OWNER") {
-            reqData.navigate("admin/restaurants")
-        } else {
-            reqData.navigate("/")
-        }
+        
+        // Remove the JWT immediately to force a fresh login
+        localStorage.removeItem("jwt");
+        
+        // Show success message (optional)
+        alert("Registration successful! Please log in with your credentials.");
+        
+        // Redirect to login page instead of trying direct navigation
+        reqData.navigate("/account/login");
     } catch (error) {
         dispatch({ type: REGISTER_FAILURE, payload: error.response.data });
     }
