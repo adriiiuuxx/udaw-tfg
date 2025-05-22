@@ -137,6 +137,50 @@ The application will be available at:
 - Frontend: http://localhost
 - Backend API: http://localhost:8080
 
+## Using Custom Domain (udaweats.es) for Local Development
+
+If you want to access the application using `udaweats.es` instead of `localhost`, follow these steps:
+
+### 1. Modify your hosts file
+
+#### On Windows:
+1. Open Notepad as Administrator
+2. Open the file: `C:\Windows\System32\drivers\etc\hosts`
+3. Add this line: `127.0.0.1  udaweats.es`
+4. Save the file
+
+#### On Linux/Mac:
+```bash
+sudo nano /etc/hosts
+# Add this line: 127.0.0.1 udaweats.es
+# Save with Ctrl+O, then Exit with Ctrl+X
+```
+
+### 2. Update the docker-compose.yml file
+
+Change the `FRONTEND_BASE_URL` environment variable in the backend service:
+
+```yaml
+backend:
+  # other configuration...
+  environment:
+    # other environment variables...
+    FRONTEND_BASE_URL: http://udaweats.es
+```
+
+### 3. Restart the containers
+
+```bash
+docker-compose down
+docker-compose up -d
+```
+
+### 4. Access the application
+
+Now you can access the application at http://udaweats.es instead of http://localhost.
+
+**Note:** This modification only works on your local machine. Other users will need to make the same changes to access the application using the custom domain.
+
 ## 🗄️ Key Entities
 
 ### 👤 User
